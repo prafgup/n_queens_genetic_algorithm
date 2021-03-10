@@ -21,7 +21,7 @@ def crossover(individual1, individual2):
     return individual1[0 : crossover_point] + individual2[crossover_point :]
 
 
-def mutation(individual):
+def mutation_swap(individual):
     n = len(individual)
 
     i = random.randint(0,n-1)
@@ -34,7 +34,13 @@ def mutation(individual):
     # mutation_number = random.randint(1,n)
     # individual[mutation_point] = mutation_number
     return individual
-    
+
+def mutation_random_change(individual):
+    n = len(individual)
+    mutation_point = random.randint(0,n-1)
+    mutation_number = random.randint(1,n)
+    individual[mutation_point] = mutation_number
+    return individual  
 
 def generate_individual(n):
     result = list(range(1, n + 1))
@@ -83,7 +89,7 @@ class Genetic(object):
 
         # mutation
             if random.random() < mutation_probability:
-                childrens[0] = mutation(childrens[0])
+                childrens[0] = mutation_swap(childrens[0])
                 self.mutation_count+=1
 
         # for parent in candid_parents:
@@ -93,7 +99,7 @@ class Genetic(object):
 
         #in code below check if each child is better than each one of queens individuals, set that individual the new child
         if len(childrens) != 0 :
-            if self.queens.count(childrens[0]) > (self.pop_size)//10:
+            if self.queens.count(childrens[0]) > 1 + (self.pop_size)//10:
                 return
             best_child = childrens[0]
             best_fitness = fitness(best_child)
@@ -147,7 +153,7 @@ class Genetic(object):
 
 
 n=8#(int)(input('Enter the value of N \n -'))
-initial_population=20#(int)(input('Enter initial population size \n -'))
+initial_population=40#(int)(input('Enter initial population size \n -'))
 
 algorithm = Genetic(n=n,pop_size=initial_population)
 algorithm.start()
