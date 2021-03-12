@@ -77,7 +77,7 @@ class Genetic(object):
         individual1 = candid_parents[sorted_fitness[0][1]]
         individual2 = candid_parents[sorted_fitness[1][1]]
 
-        crossover_probability = 0.6
+        crossover_probability = 0.8
         mutation_probability = 0.1
 
         childrens = []
@@ -136,7 +136,16 @@ class Genetic(object):
         #generate new population and start algorithm until number of attacking pairs is zero
         # self.generate_population(random_selections)
         # return
+
+        pref_fittest = -1
+
         while not self.finished()[0]:
+            if pref_fittest != self.current_fittest:
+                print("Generation Count = {}".format(self.generation_count))
+                print("Mutation Count = {}".format(self.mutation_count))
+                print("Crossover Count = {}".format(self.crossover_count))
+                print("Fittest Current = {}".format(self.current_fittest))
+            pref_fittest = self.current_fittest
             self.generate_population(random_selections)
             #print(self.queens)
             # print("Generation Count = {}".format(self.generation_count))
@@ -152,8 +161,8 @@ class Genetic(object):
 
 
 
-n=8#(int)(input('Enter the value of N \n -'))
-initial_population=40#(int)(input('Enter initial population size \n -'))
+n=(int)(input('Enter the value of N \n -'))
+initial_population=(int)(input('Enter initial population size \n -'))
 
 algorithm = Genetic(n=n,pop_size=initial_population)
 algorithm.start()
