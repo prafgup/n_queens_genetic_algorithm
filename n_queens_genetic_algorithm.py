@@ -15,12 +15,13 @@ def fitness(individual):
                 total_collisions += 1
     return total_collisions
 
+# crossover of 2 individuals at random point
 def crossover(individual1, individual2):
     n = len(individual1)
     crossover_point = random.randint(0,n-1)
     return individual1[0 : crossover_point] + individual2[crossover_point :]
 
-
+# mutation of a individuals at 2 random points
 def mutation_swap(individual):
     n = len(individual)
 
@@ -29,10 +30,6 @@ def mutation_swap(individual):
     if j == i:
         j = (j+1)%n
     individual[i], individual[j] = individual[j], individual[i]
-
-    # mutation_point = random.randint(0,n-1)
-    # mutation_number = random.randint(1,n)
-    # individual[mutation_point] = mutation_number
     return individual
 
 def mutation_random_change(individual):
@@ -100,6 +97,7 @@ class Genetic(object):
         #in code below check if each child is better than each one of queens individuals, set that individual the new child
         if len(childrens) != 0 :
             if self.queens.count(childrens[0]) > 1 + (self.pop_size)//10:
+                # no more than 10% of the population can be same
                 return
             best_child = childrens[0]
             best_fitness = fitness(best_child)
@@ -107,8 +105,7 @@ class Genetic(object):
                 if fitness(child) < fitness(best_child):
                     best_child = child
                     best_fitness = fitness(best_child)
-            # print(best_child)
-            # print(best_fitness)
+
             for i in range(len(self.queens)):
                 if fitness(self.queens[i]) > best_fitness:
                     self.queens[i] = best_child
@@ -140,6 +137,7 @@ class Genetic(object):
         pref_fittest = -1
 
         while not self.finished()[0]:
+            # if new fitness found printing current stats
             if pref_fittest != self.current_fittest:
                 print("Generation Count = {}".format(self.generation_count))
                 print("Mutation Count = {}".format(self.mutation_count))
